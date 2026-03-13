@@ -1,12 +1,11 @@
-package edu.nd.pmcburne.hwapp.one
-
+package edu.nd.pmcburne.hwapp.one.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "games")
 
-data class GameItem(
+data class GameEntity(
     @PrimaryKey
     val id: String,
     val date: String,
@@ -40,5 +39,3 @@ data class GameItem(
     // date/time for upcoming games
     val startTime: String
 )
-
-
