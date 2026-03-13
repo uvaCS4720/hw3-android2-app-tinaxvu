@@ -32,49 +32,65 @@ class BasketballRepository(
                 date.format(DateTimeFormatter.ofPattern("MM")),
                 date.format(DateTimeFormatter.ofPattern("dd"))
             )
-
-
             val dateStr = date.format(DateTimeFormatter.ISO_LOCAL_DATE)
-            val entities = response.events?.mapNotNull { event ->
-                val competition = event.competitions?.firstOrNull() ?: return@mapNotNull null
-                val home = competition.competitors?.find { it.homeAway == "home" } ?: return@mapNotNull null
-                val away = competition.competitors?.find { it.homeAway == "away" } ?: return@mapNotNull null
-                val status = competition.status
-                val statusType = status?.type
-                val startTime = try {
-                    ZonedDateTime.parse(competition.date ?: event.date ?: "")
-                        .format(DateTimeFormatter.ofPattern("h:mm a z"))
-                } catch (e: DateTimeParseException) { competition.date ?: event.date ?: "" }
+
+            val entities = response.games?.mapNotNull { wrapper ->
+                val game = wrapper.game ?: return@mapNotNull null
+                val home = game.home ?: return@mapNotNull null
+                val away = game.away ?: return@mapNotNull null
+
+                // normalize gameState: "final" -> "post", "live" -> "in", "pre" -> "pre"
+                val statusState = when (game.gameState?.lowercase()) {
+                    "final" -> "post"
+                    "live" -> "in"
+                    else -> "pre"
+                }
+
+                val isCompleted = game.gameState?.lowercase() == "final"
+
+                // period: currentPeriod is "1st", "2nd", "HALFTIME", etc.
+                val period = when (game.currentPeriod?.lowercase()) {
+                    "1st" -> 1
+                    "2nd" -> 2
+                    "3rd" -> 3
+                    "4th" -> 4
+                    "halftime" -> 2
+                    "ot" -> 5
+                    else -> 0
+                }
 
                 GameEntity(
-                    id = event.id, date = dateStr, gender = gender,
-                    homeTeamId = home.team?.id ?: "",
-                    homeTeamName = home.team?.name ?: "",
-                    homeTeamDisplayName = home.team?.displayName ?: home.team?.shortDisplayName ?: "",
-                    homeTeamAbbreviation = home.team?.abbreviation ?: "",
-                    homeScore = home.score ?: "0", homeWinner = home.winner ?: false,
-                    awayTeamId = away.team?.id ?: "",
-                    awayTeamName = away.team?.name ?: "",
-                    awayTeamDisplayName = away.team?.displayName ?: away.team?.shortDisplayName ?: "",
-                    awayTeamAbbreviation = away.team?.abbreviation ?: "",
-                    awayScore = away.score ?: "0", awayWinner = away.winner ?: false,
-                    statusState = statusType?.state ?: "pre",
-                    statusDescription = statusType?.description ?: "",
-                    statusDetail = statusType?.detail ?: "",
-                    statusShortDetail = statusType?.shortDetail ?: "",
-                    displayClock = status?.displayClock ?: "0:00",
-                    period = status?.period ?: 0,
-                    isCompleted = statusType?.completed ?: false,
-                    startTime = startTime
+                    id = game.gameID,
+                    date = dateStr,
+                    gender = gender,
+                    homeTeamId = game.gameID + "_home",
+                    homeTeamName = home.names?.short ?: home.names?.char6 ?: "",
+                    homeTeamDisplayName = home.names?.short ?: home.names?.char6 ?: "",
+                    homeTeamAbbreviation = home.names?.char6 ?: "",
+                    homeScore = home.score ?: "",
+                    homeWinner = home.winner ?: false,
+                    awayTeamId = game.gameID + "_away",
+                    awayTeamName = away.names?.short ?: away.names?.char6 ?: "",
+                    awayTeamDisplayName = away.names?.short ?: away.names?.char6 ?: "",
+                    awayTeamAbbreviation = away.names?.char6 ?: "",
+                    awayScore = away.score ?: "",
+                    awayWinner = away.winner ?: false,
+                    statusState = statusState,
+                    statusDescription = game.finalMessage ?: "",
+                    statusDetail = game.currentPeriod ?: "",
+                    statusShortDetail = game.currentPeriod ?: "",
+                    displayClock = game.contestClock ?: "0:00",
+                    period = period,
+                    isCompleted = isCompleted,
+                    startTime = game.startTime ?: ""
                 )
             } ?: emptyList()
+
             gameDao.upsertGames(entities)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }
-
-
     }
 
     private fun isNetworkAvailable(): Boolean {

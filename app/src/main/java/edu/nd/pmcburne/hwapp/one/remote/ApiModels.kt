@@ -1,72 +1,33 @@
 package edu.nd.pmcburne.hwapp.one.remote
 
 data class ScoreboardResponse(
-    val events: List<Event>? = null
+    val games: List<GameWrapper>? = null
 )
 
-data class Event(
-    val id: String,
-    val date: String? = null,
-    val name: String? = null,
-    val competitions: List<Competition>? = null
+data class GameWrapper(
+    val game: Game? = null
 )
 
-data class Competition(
-    val id: String,
-    val date: String? = null,
-    val status: CompetitionStatus? = null,
-    val competitors: List<Competitor>? = null,
-    val situation: Situation? = null
+data class Game(
+    val gameID: String,
+    val title: String? = null,
+    val gameState: String? = null,
+    val startTime: String? = null,
+    val startDate: String? = null,
+    val currentPeriod: String? = null,
+    val contestClock: String? = null,
+    val finalMessage: String? = null,
+    val home: GameTeam? = null,
+    val away: GameTeam? = null
 )
 
-data class CompetitionStatus(
-    val clock: Double? = null,
-    val displayClock: String? = null,
-    val period: Int? = null,
-    val type: StatusType? = null
-)
-
-data class StatusType(
-    val id: String? = null,
-    val name: String? = null,
-    val state: String? = null,
-    val completed: Boolean? = null,
-    val description: String? = null,
-    val detail: String? = null,
-    val shortDetail: String? = null
-)
-
-data class Competitor(
-    val id: String,
-    val homeAway: String? = null,
-    val winner: Boolean? = null,
+data class GameTeam(
     val score: String? = null,
-    val team: Team? = null,
-    val records: List<Record>? = null
+    val winner: Boolean? = null,
+    val names: TeamNames? = null
 )
 
-data class Team(
-    val id: String,
-    val location: String? = null,
-    val name: String? = null,
-    val abbreviation: String? = null,
-    val displayName: String? = null,
-    val shortDisplayName: String? = null,
-    val color: String? = null,
-    val alternateColor: String? = null,
-    val logo: String? = null
-)
-
-data class Record(
-    val name: String? = null,
-    val summary: String? = null,
-    val type: String? = null
-)
-
-data class Situation(
-    val lastPlay: LastPlay? = null
-)
-
-data class LastPlay(
-    val text: String? = null
+data class TeamNames(
+    val short: String? = null,
+    val char6: String? = null
 )

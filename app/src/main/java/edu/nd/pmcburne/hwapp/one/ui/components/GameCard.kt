@@ -53,7 +53,6 @@ fun GameCard(game: GameEntity, isWomens: Boolean) {
         colors = CardDefaults.cardColors(containerColor = cardColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Status badge row
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -72,7 +71,7 @@ fun GameCard(game: GameEntity, isWomens: Boolean) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Teams and scores
+            // teams and scores
             TeamRow(
                 teamName = game.awayTeamDisplayName,
                 abbreviation = game.awayTeamAbbreviation,
@@ -160,7 +159,7 @@ fun TeamRow(
         ) {
             if (isHome) {
                 Text(
-                    text = "🏠 ",
+                    text = "HOME ",
                     fontSize = 12.sp
                 )
             } else {

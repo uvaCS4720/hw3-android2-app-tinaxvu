@@ -69,7 +69,7 @@ fun ScoreboardScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "🏀 NCAA Basketball",
+                        text = "NCAA Basketball",
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -89,7 +89,6 @@ fun ScoreboardScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Controls row
             Surface(
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 tonalElevation = 2.dp
@@ -100,7 +99,6 @@ fun ScoreboardScreen(
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Date picker button
                     OutlinedButton(
                         onClick = { showDatePicker = true },
                         modifier = Modifier.fillMaxWidth()
@@ -113,7 +111,7 @@ fun ScoreboardScreen(
                         )
                     }
 
-                    // Men's / Women's toggle
+
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                         SegmentedButton(
                             selected = !uiState.isWomens,
@@ -133,7 +131,6 @@ fun ScoreboardScreen(
                 }
             }
 
-            // Error / offline message
             uiState.errorMessage?.let { error ->
                 Surface(
                     color = if (error.contains("Offline"))
@@ -168,12 +165,10 @@ fun ScoreboardScreen(
                 }
             }
 
-            // Loading indicator
             if (uiState.isLoading) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
 
-            // Pull-to-refresh + game list
             PullToRefreshBox(
                 isRefreshing = uiState.isLoading,
                 onRefresh = { viewModel.refresh() },
@@ -189,10 +184,6 @@ fun ScoreboardScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(
-                                text = "🏀",
-                                style = MaterialTheme.typography.displayMedium
-                            )
                             Text(
                                 text = "No games found",
                                 style = MaterialTheme.typography.titleMedium,
@@ -218,7 +209,7 @@ fun ScoreboardScreen(
 
                         if (liveGames.isNotEmpty()) {
                             item {
-                                SectionHeader("🔴  Live", count = liveGames.size)
+                                SectionHeader("Live", count = liveGames.size)
                             }
                             items(liveGames, key = { it.id }) { game ->
                                 GameCard(game = game, isWomens = uiState.isWomens)
@@ -227,7 +218,7 @@ fun ScoreboardScreen(
 
                         if (upcomingGames.isNotEmpty()) {
                             item {
-                                SectionHeader("🕐  Upcoming", count = upcomingGames.size)
+                                SectionHeader("Upcoming", count = upcomingGames.size)
                             }
                             items(upcomingGames, key = { it.id }) { game ->
                                 GameCard(game = game, isWomens = uiState.isWomens)
@@ -236,7 +227,7 @@ fun ScoreboardScreen(
 
                         if (finalGames.isNotEmpty()) {
                             item {
-                                SectionHeader("✅  Final", count = finalGames.size)
+                                SectionHeader("Final", count = finalGames.size)
                             }
                             items(finalGames, key = { it.id }) { game ->
                                 GameCard(game = game, isWomens = uiState.isWomens)
