@@ -1,6 +1,6 @@
 [versions]
-agp = "8.13.2"
-kotlin = "2.0.21"
+agp = "9.0.1"
+kotlin = "2.2.10"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -12,6 +12,8 @@ retrofit = "3.0.0"
 roomCommonJvm = "2.8.4"
 roomKtx = "2.8.4"
 ui = "1.10.4"
+roomCompiler = "2.8.4"
+lifecycleViewmodelKtx = "2.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +34,8 @@ androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", 
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
