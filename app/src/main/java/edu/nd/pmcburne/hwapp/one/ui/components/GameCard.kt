@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.nd.pmcburne.hwapp.one.local.GameEntity
 
+// The following stylistic choices for the Card component was assisted with Claude 4.6 Sonnet
+
 @Composable
 fun GameCard(game: GameEntity, isWomens: Boolean) {
     val statusState = game.statusState
@@ -71,7 +73,6 @@ fun GameCard(game: GameEntity, isWomens: Boolean) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // teams and scores
             TeamRow(
                 teamName = game.awayTeamDisplayName,
                 abbreviation = game.awayTeamAbbreviation,

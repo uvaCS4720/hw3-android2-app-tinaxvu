@@ -53,6 +53,8 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.foundation.lazy.items
 
 
+// The following stylistic choices for the Scoreboard component was assisted with Claude 4.6 Sonnet
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
